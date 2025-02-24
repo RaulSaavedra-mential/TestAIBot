@@ -23,13 +23,17 @@
         }
 
         df-messenger {
-            z-index: 999;
-            position: fixed;
+            width: 100%;
+            height: 100%;
+            --df-messenger-font-family: "Inter";
+            --df-messenger-font-size: 15px;
             --df-messenger-font-color: #0A243E;
-            --df-messenger-font-family: Arial;
             --df-messenger-chat-background: #FAFCFE;
             --df-messenger-message-user-background: #0A243E;
+            --df-messenger-message-user-font-color: #FFFFFF;
             --df-messenger-message-bot-background: #EDF1FA;
+            --df-messenger-titlebar-background: #FAFCFE;
+            position: fixed;
             bottom: 16px;
             right: 16px;
         }
@@ -43,7 +47,20 @@
         language-code="es"
         max-query-length="-1"
         allow-feedback="all">
-        <df-messenger-chat-bubble chat-title="Mentis"></df-messenger-chat-bubble>
+        <df-messenger-chat
+          chat-title="Mentis"
+          placeholder-text="Escribe aquí..."
+          bot-writing-text="..."
+          bot-actor-image="https://storage.googleapis.com/media.landbot.io/363221/channels/UL901DJY40GXASSTZAZCVJD7QFJUKZJ6.png">
+        </df-messenger-chat>
     </df-messenger>
+
+    <script>
+        window.addEventListener('dfMessengerLoaded', function () {
+            document.querySelector('df-messenger').addEventListener('df-messenger-new-message', function(event) {
+                window.ReactNativeWebView.postMessage(JSON.stringify(event.detail));
+            });
+        });
+    </script>
 </body>
 </html>
