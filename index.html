@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mentis Chatbot</title>
+
+    <!-- Estilos de Dialogflow -->
+    <link rel="stylesheet" href="https://www.gstatic.com/dialogflow-console/fast/df-messenger/prod/v1/themes/df-messenger-default.css">
+    
+    <!-- Script de Dialogflow -->
+    <script src="https://www.gstatic.com/dialogflow-console/fast/df-messenger/prod/v1/df-messenger.js"></script>
+
+    <style>
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background-color: #FAFCFE;
+        }
+
+        df-messenger {
+            z-index: 999;
+            position: fixed;
+            --df-messenger-font-color: #0A243E;
+            --df-messenger-font-family: Arial;
+            --df-messenger-chat-background: #FAFCFE;
+            --df-messenger-message-user-background: #0A243E;
+            --df-messenger-message-bot-background: #EDF1FA;
+            bottom: 16px;
+            right: 16px;
+        }
+    </style>
+</head>
+<body>
+    <!-- Dialogflow Messenger -->
+    <df-messenger
+        project-id="mential-dev"
+        agent-id="90270536-3109-43d8-a63e-311c1ddd70e3"
+        language-code="es"
+        max-query-length="-1"
+        allow-feedback="all">
+        <df-messenger-chat-bubble chat-title="Mentis"></df-messenger-chat-bubble>
+    </df-messenger>
+</body>
+</html>
