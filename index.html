@@ -19,12 +19,29 @@
             justify-content: center;
             align-items: center;
             height: 100vh;
+            width: 100vw;
             background-color: #FAFCFE;
         }
 
+        #chat-container {
+            width: 100vw;
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
         df-messenger {
-            width: 100%;
-            height: 100%;
+            width: 100vw;
+            height: 100vh;
+            z-index: 999;
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            top: 0;
+            margin: 0;
+            padding: 0;
             --df-messenger-font-family: "Inter";
             --df-messenger-font-size: 15px;
             --df-messenger-font-color: #0A243E;
@@ -34,27 +51,43 @@
             --df-messenger-message-bot-background: #EDF1FA;
             --df-messenger-titlebar-background: transparent;
             --df-messenger-titlebar-padding: 0;
-            position: fixed;
         }
     </style>
 </head>
 <body>
-    <!-- Dialogflow Messenger -->
-    <df-messenger
-        project-id="mential-uat"
-        agent-id="0a020274-fcb5-43a2-ab0b-dd161ff1ff64"
-        language-code="es"
-        max-query-length="-1"
-        allow-feedback="all">
-        <df-messenger-chat
-          chat-title=""
-          placeholder-text="Escribe aquí..."
-          bot-writing-text="..."
-          bot-actor-image="https://storage.googleapis.com/media.landbot.io/363221/channels/UL901DJY40GXASSTZAZCVJD7QFJUKZJ6.png">
-        </df-messenger-chat>
-    </df-messenger>
+    <!-- Contenedor donde se insertará el chatbot dinámico -->
+    <div id="chat-container"></div>
 
     <script>
+        // Función para obtener parámetros de la URL
+        function getQueryParam(param) {
+            const urlParams = new URLSearchParams(window.location.search);
+            return urlParams.get(param);
+        }
+
+        // Obtener el agent-id de la URL, si no hay uno usa un default
+        const agentId = getQueryParam('agent-id') || "0a020274-fcb5-43a2-ab0b-dd161ff1ff64";
+
+        // Crear el chatbot dinámicamente
+        const dfMessenger = document.createElement("df-messenger");
+        dfMessenger.setAttribute("project-id", "mential-uat");
+        dfMessenger.setAttribute("agent-id", agentId);
+        dfMessenger.setAttribute("language-code", "es");
+        dfMessenger.setAttribute("max-query-length", "-1");
+        dfMessenger.setAttribute("allow-feedback", "all");
+
+        const dfChat = document.createElement("df-messenger-chat");
+        dfChat.setAttribute("chat-title", "");
+        dfChat.setAttribute("placeholder-text", "Escribe aquí...");
+        dfChat.setAttribute("bot-writing-text", "...");
+        dfChat.setAttribute("bot-actor-image", "https://storage.googleapis.com/media.landbot.io/363221/channels/UL901DJY40GXASSTZAZCVJD7QFJUKZJ6.png");
+
+        dfMessenger.appendChild(dfChat);
+
+        // Insertar en el contenedor correctamente centrado
+        document.getElementById("chat-container").appendChild(dfMessenger);
+
+        // Comunicación con WebView
         window.addEventListener('dfMessengerLoaded', function () {
             document.querySelector('df-messenger').addEventListener('df-messenger-new-message', function(event) {
                 window.ReactNativeWebView.postMessage(JSON.stringify(event.detail));
