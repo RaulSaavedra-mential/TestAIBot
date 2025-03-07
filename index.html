@@ -65,7 +65,7 @@
         }
 
         // Obtener el agent-id de la URL, si no hay uno usa un default
-        const agentId = "hola";
+        const agentId = getQueryParam('agent-id') || "0a020274-fcb5-43a2-ab0b-dd161ff1ff64";
 
         // Crear el chatbot dinámicamente
         const dfMessenger = document.createElement("df-messenger");
@@ -94,20 +94,24 @@
             });
         });
 
+        // Capturar el evento cuando el usuario ingresa texto
         window.addEventListener('df-user-input-entered', (event) => {
             console.log('Usuario ingresó:', event.detail.input);
             window.ReactNativeWebView.postMessage(JSON.stringify({ type: 'user-input', input: event.detail.input }));
         });
 
+        // Capturar el evento cuando se envía una solicitud al backend
         window.addEventListener('df-request-sent', (event) => {
             console.log('Solicitud enviada:', event.detail.data.requestBody);
             window.ReactNativeWebView.postMessage(JSON.stringify({ type: 'request-sent', request: event.detail.data.requestBody }));
         });
 
+        // Capturar el evento cuando se recibe una respuesta del agente
         window.addEventListener('df-response-received', (event) => {
             console.log('Respuesta recibida:', event.detail.data);
             window.ReactNativeWebView.postMessage(JSON.stringify({ type: 'response-received', response: event.detail.data }));
             
+            // Filtrar solo mensajes de texto
             event.detail.data.messages = event.detail.data.messages.filter(message => message.type === 'text');
         });
        
