@@ -88,10 +88,29 @@
 
         // Comunicación con WebView
         window.addEventListener('dfMessengerLoaded', function () {
+            //    console.log('dfMessengerLoaded event triggered');
             document.querySelector('df-messenger').addEventListener('df-messenger-new-message', function(event) {
                 window.ReactNativeWebView.postMessage(JSON.stringify(event.detail));
             });
         });
+
+        window.addEventListener('df-user-input-entered', (event) => {
+            console.log('Usuario ingresó:', event.detail.input);
+            window.ReactNativeWebView.postMessage(JSON.stringify({ type: 'user-input', input: event.detail.input }));
+        });
+
+        window.addEventListener('df-request-sent', (event) => {
+            console.log('Solicitud enviada:', event.detail.data.requestBody);
+            window.ReactNativeWebView.postMessage(JSON.stringify({ type: 'request-sent', request: event.detail.data.requestBody }));
+        });
+
+        window.addEventListener('df-response-received', (event) => {
+            console.log('Respuesta recibida:', event.detail.data);
+            window.ReactNativeWebView.postMessage(JSON.stringify({ type: 'response-received', response: event.detail.data }));
+            
+            event.detail.data.messages = event.detail.data.messages.filter(message => message.type === 'text');
+        });
+       
     </script>
 </body>
 </html>
