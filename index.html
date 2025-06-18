@@ -99,12 +99,17 @@
                 dfMessengerEl.renderCustomEvent({ name: 'triggerInit' });
             }, 1000);
 
+            dfMessengerEl.addEventListener('onchatopen', () => {
+            dfMessengerEl.renderCustomText('WELCOME');
+            });
+
             // Eventos estándar para comunicación con React Native WebView (si aplica)
             dfMessengerEl.addEventListener('df-messenger-new-message', function(event) {
                 window.ReactNativeWebView?.postMessage(JSON.stringify(event.detail));
             });
         });
 
+       
         // Capturar el evento cuando el usuario ingresa texto
         window.addEventListener('df-user-input-entered', (event) => {
             console.log('Usuario ingresó:', event.detail.input);
