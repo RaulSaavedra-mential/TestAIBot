@@ -83,6 +83,19 @@
         document.getElementById("chat-container").appendChild(dfMessenger);
         console.log("✅ df-messenger insertado en el DOM");
 
+        setTimeout(() => {
+  const dfMessengerEl = document.querySelector('df-messenger');
+  if (!dfMessengerEl) {
+    console.warn("❌ No se encontró <df-messenger> después del timeout.");
+    return;
+  }
+
+  console.log("⏱️ Timeout completado. Intentando renderCustomText...");
+
+  dfMessengerEl.renderCustomText('¡Hola! Soy Mential, estoy aquí para ayudarte.');
+  console.log("📨 Mensaje simulado enviado.");
+}, 1500);
+
         window.addEventListener('dfMessengerLoaded', () => {
             console.log("✅ dfMessengerLoaded recibido");
             const dfMessengerEl = document.querySelector('df-messenger');
