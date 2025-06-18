@@ -12,16 +12,15 @@
     <script src="https://www.gstatic.com/dialogflow-console/fast/df-messenger/prod/v1/df-messenger.js"></script>
 
     <style>
-        body {
+        html, body {
             margin: 0;
-            font-family: Arial, sans-serif;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
+            padding: 0;
             width: 100vw;
-            background-color: #FAFCFE;
+            height: 100vh;
+            overflow: hidden;
+            box-sizing: border-box;
         }
+        
 
         #chat-container {
             width: 100vw;
@@ -33,7 +32,7 @@
 
         df-messenger {
             width: 100vw;
-            height: 100vh;
+            height: 100dvh;
             z-index: 999;
             position: fixed;
             bottom: 0;
@@ -101,6 +100,28 @@
                 window.ReactNativeWebView?.postMessage(JSON.stringify(event.detail));
             });
         });
+
+        // Capturar el evento cuando el usuario ingresa texto
+        window.addEventListener('df-user-input-entered', (event) => {
+            console.log('Usuario ingresó:', event.detail.input);
+            window.ReactNativeWebView.postMessage(JSON.stringify({ type: 'user-input', input: event.detail.input }));
+        });
+
+        // Capturar el evento cuando se envía una solicitud al backend
+        window.addEventListener('df-request-sent', (event) => {
+            console.log('Solicitud enviada:', event.detail.data.requestBody);
+            window.ReactNativeWebView.postMessage(JSON.stringify({ type: 'request-sent', request: event.detail.data.requestBody }));
+        });
+
+        // Capturar el evento cuando se recibe una respuesta del agente
+        window.addEventListener('df-response-received', (event) => {
+            console.log('Respuesta recibida:', event.detail.data);
+            window.ReactNativeWebView.postMessage(JSON.stringify({ type: 'response-received', response: event.detail.data }));
+            
+            // Filtrar solo mensajes de texto
+            event.detail.data.messages = event.detail.data.messages.filter(message => message.type === 'text');
+        });
+       
     </script>
 </body>
 </html>
