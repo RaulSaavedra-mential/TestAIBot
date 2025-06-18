@@ -56,12 +56,15 @@
     <div id="chat-container"></div>
 
     <script>
+        console.log("🚀 Script iniciado");
+
         function getQueryParam(param) {
             const urlParams = new URLSearchParams(window.location.search);
             return urlParams.get(param);
         }
 
         const agentId = getQueryParam('agent-id') || "0a020274-fcb5-43a2-ab0b-dd161ff1ff64";
+        console.log("🔧 Agent ID:", agentId);
 
         const dfMessenger = document.createElement("df-messenger");
         dfMessenger.setAttribute("project-id", "mential-uat");
@@ -78,12 +81,21 @@
 
         dfMessenger.appendChild(dfChat);
         document.getElementById("chat-container").appendChild(dfMessenger);
+        console.log("✅ df-messenger insertado en el DOM");
 
-        // Mostrar mensaje simulado cuando se abre el chat
         window.addEventListener('dfMessengerLoaded', () => {
+            console.log("✅ dfMessengerLoaded recibido");
             const dfMessengerEl = document.querySelector('df-messenger');
+
+            if (!dfMessengerEl) {
+                console.warn("❌ No se encontró el elemento <df-messenger>");
+                return;
+            }
+
             dfMessengerEl.addEventListener('onchatopen', () => {
+                console.log("🟢 Chat abierto por el usuario o automáticamente");
                 dfMessengerEl.renderCustomText('¡Hola! Soy Mential, estoy aquí para ayudarte.');
+                console.log("📨 Mensaje simulado enviado con renderCustomText");
             });
         });
     </script>
