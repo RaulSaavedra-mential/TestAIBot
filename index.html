@@ -83,7 +83,7 @@
 
         dfMessenger.appendChild(dfChat);
 
-         dfMessenger.renderCustomText('Custom text');
+        
 
         // Insertar en el contenedor correctamente centrado
         document.getElementById("chat-container").appendChild(dfMessenger);
@@ -91,6 +91,8 @@
         // Comunicación con WebView
         window.addEventListener('dfMessengerLoaded', function () {
             const dfMessengerEl = document.querySelector('df-messenger');
+            
+            
             dfMessengerEl.renderCustomText('Custom text');
             setTimeout(() => {
                 dfMessengerEl.renderCustomEvent({ name: 'WELCOME' });
