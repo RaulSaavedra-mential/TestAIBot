@@ -20,7 +20,6 @@
             overflow: hidden;
             box-sizing: border-box;
         }
-        
 
         #chat-container {
             width: 100vw;
@@ -54,20 +53,16 @@
     </style>
 </head>
 <body>
-    <!-- Contenedor donde se insertará el chatbot dinámico -->
     <div id="chat-container"></div>
 
     <script>
-        // Función para obtener parámetros de la URL
         function getQueryParam(param) {
             const urlParams = new URLSearchParams(window.location.search);
             return urlParams.get(param);
         }
 
-        // Obtener el agent-id de la URL, si no hay uno usa un default
         const agentId = getQueryParam('agent-id') || "0a020274-fcb5-43a2-ab0b-dd161ff1ff64";
 
-        // Crear el chatbot dinámicamente
         const dfMessenger = document.createElement("df-messenger");
         dfMessenger.setAttribute("project-id", "mential-uat");
         dfMessenger.setAttribute("agent-id", agentId);
@@ -82,59 +77,15 @@
         dfChat.setAttribute("bot-actor-image", "https://storage.googleapis.com/media.landbot.io/363221/channels/UL901DJY40GXASSTZAZCVJD7QFJUKZJ6.png");
 
         dfMessenger.appendChild(dfChat);
-
-        
-
-        // Insertar en el contenedor correctamente centrado
         document.getElementById("chat-container").appendChild(dfMessenger);
 
-        // Comunicación con WebView
-        window.addEventListener('dfMessengerLoaded', function () {
+        // Mostrar mensaje simulado cuando se abre el chat
+        window.addEventListener('dfMessengerLoaded', () => {
             const dfMessengerEl = document.querySelector('df-messenger');
-            
-            
-            dfMessengerEl.renderCustomText('Custom text');
-            setTimeout(() => {
-                dfMessengerEl.renderCustomEvent({ name: 'WELCOME' });
-            }, 500);
-
-            // Disparar evento triggerInit automáticamente al cargar
-            setTimeout(() => {
-                dfMessengerEl.renderCustomEvent({ name: 'triggerInit' });
-            }, 1000);
-
             dfMessengerEl.addEventListener('onchatopen', () => {
-            dfMessengerEl.renderCustomEvent('WELCOME');
-            });
-
-            // Eventos estándar para comunicación con React Native WebView (si aplica)
-            dfMessengerEl.addEventListener('df-messenger-new-message', function(event) {
-                window.ReactNativeWebView?.postMessage(JSON.stringify(event.detail));
+                dfMessengerEl.renderCustomText('¡Hola! Soy Mential, estoy aquí para ayudarte.');
             });
         });
-
-       
-        // Capturar el evento cuando el usuario ingresa texto
-        window.addEventListener('df-user-input-entered', (event) => {
-            console.log('Usuario ingresó:', event.detail.input);
-            window.ReactNativeWebView.postMessage(JSON.stringify({ type: 'user-input', input: event.detail.input }));
-        });
-
-        // Capturar el evento cuando se envía una solicitud al backend
-        window.addEventListener('df-request-sent', (event) => {
-            console.log('Solicitud enviada:', event.detail.data.requestBody);
-            window.ReactNativeWebView.postMessage(JSON.stringify({ type: 'request-sent', request: event.detail.data.requestBody }));
-        });
-
-        // Capturar el evento cuando se recibe una respuesta del agente
-        window.addEventListener('df-response-received', (event) => {
-            console.log('Respuesta recibida:', event.detail.data);
-            window.ReactNativeWebView.postMessage(JSON.stringify({ type: 'response-received', response: event.detail.data }));
-            
-            // Filtrar solo mensajes de texto
-            event.detail.data.messages = event.detail.data.messages.filter(message => message.type === 'text');
-        });
-       
     </script>
 </body>
 </html>
