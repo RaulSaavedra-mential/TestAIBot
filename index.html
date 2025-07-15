@@ -5,10 +5,13 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Mentis Chatbot</title>
 
-    <!-- Estilos de Dialogflow -->
+    <!-- NUEVO CÓDIGO DIALOGFLOW -->
+    <link rel="stylesheet" href="https://www.gstatic.com/dialogflow-console/fast/df-messenger/prod/v1/themes/df-messenger-default.css">
+    <script src="https://www.gstatic.com/dialogflow-console/fast/df-messenger/prod/v1/df-messenger.js"></script>
+
+    <!-- CÓDIGO ANTERIOR COMENTADO
     <link rel="stylesheet" href="https://www.gstatic.com/dialogflow-console/fast/df-messenger/prod/v1/themes/df-messenger-default.css">
     
-    <!-- Script de Dialogflow -->
     <script src="https://www.gstatic.com/dialogflow-console/fast/df-messenger/prod/v1/df-messenger.js"></script>
 
     <style>
@@ -51,8 +54,37 @@
             --df-messenger-titlebar-padding: 0;
         }
     </style>
+    -->
+
+    <!-- NUEVO ESTILO -->
+    <style>
+        df-messenger {
+            z-index: 999;
+            position: fixed;
+            --df-messenger-font-color: #000;
+            --df-messenger-font-family: Google Sans;
+            --df-messenger-chat-background: #f3f6fc;
+            --df-messenger-message-user-background: #d3e3fd;
+            --df-messenger-message-bot-background: #fff;
+            bottom: 16px;
+            right: 16px;
+        }
+    </style>
 </head>
 <body>
+    <!-- NUEVO CÓDIGO DIALOGFLOW -->
+    <df-messenger
+        location="europe-west1"
+        project-id="mentialtech"
+        agent-id="6f76e5eb-b10e-41d0-bff3-3875f412f2fa"
+        language-code="es"
+        max-query-length="-1">
+        <df-messenger-chat-bubble
+            chat-title="CHATAI-REC-Identificación de logros">
+        </df-messenger-chat-bubble>
+    </df-messenger>
+
+    <!-- CÓDIGO ANTERIOR COMENTADO
     <div id="chat-container"></div>
 
     <script>
@@ -112,5 +144,6 @@
             });
         });
     </script>
+    -->
 </body>
 </html>
